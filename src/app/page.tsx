@@ -1,8 +1,17 @@
 import Nav from "@/app/_lib/@nav/nav";
 import Image from "next/image";
 import Catalogue from "./_lib/@carcatalogue/page";
+import { getCarData } from "../utils";
+import Card from "@/components/Card";
+import { CarProps } from "./_data";
 
-export default function Home() {
+
+export default async function Home() {
+
+  const cars = await getCarData()
+
+  console.log(cars)
+
   return (
     <>
     <Nav />
@@ -20,6 +29,17 @@ export default function Home() {
       </div>
     </div>
     <Catalogue />
+    <div>
+      {cars.length < 0 ? (
+        <h1>There is no car please try to search in the search bar</h1>
+      ) : (
+        <div className="grid grid-cols-3 gap-3 p-6">
+          {cars.map((element:CarProps) => (
+            <Card props={element} />
+          ))}
+        </div>
+      )}
+    </div>
     </>
   );
 }
